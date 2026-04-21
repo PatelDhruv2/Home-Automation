@@ -1,0 +1,95 @@
+Accuracy score: 0.7379
+
+Classification report:
+              precision    recall  f1-score   support
+
+           0     0.7093    0.6778    0.6932        90
+           1     0.7583    0.7845    0.7712       116
+
+    accuracy                         0.7379       206
+   macro avg     0.7338    0.7311    0.7322       206
+weighted avg     0.7369    0.7379    0.7371       206
+
+Decision tree rules:
+|--- prev_state <= 0.50
+|   |--- hour <= 9.50
+|   |   |--- day_of_week <= 4.50
+|   |   |   |--- hour <= 5.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- hour >  5.50
+|   |   |   |   |--- class: 0
+|   |   |--- day_of_week >  4.50
+|   |   |   |--- time_since_last_change <= 200.00
+|   |   |   |   |--- class: 0
+|   |   |   |--- time_since_last_change >  200.00
+|   |   |   |   |--- class: 0
+|   |--- hour >  9.50
+|   |   |--- hour <= 20.50
+|   |   |   |--- hour <= 13.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- hour >  13.50
+|   |   |   |   |--- class: 1
+|   |   |--- hour >  20.50
+|   |   |   |--- day_of_week <= 5.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- day_of_week >  5.50
+|   |   |   |   |--- class: 0
+|--- prev_state >  0.50
+|   |--- hour <= 4.50
+|   |   |--- time_since_last_change <= 65.00
+|   |   |   |--- day_of_week <= 2.50
+|   |   |   |   |--- class: 1
+|   |   |   |--- day_of_week >  2.50
+|   |   |   |   |--- class: 0
+|   |   |--- time_since_last_change >  65.00
+|   |   |   |--- class: 0
+|   |--- hour >  4.50
+|   |   |--- hour <= 22.50
+|   |   |   |--- hour <= 9.50
+|   |   |   |   |--- class: 1
+|   |   |   |--- hour >  9.50
+|   |   |   |   |--- class: 1
+|   |   |--- hour >  22.50
+|   |   |   |--- time_since_last_change <= 62.50
+|   |   |   |   |--- class: 1
+|   |   |   |--- time_since_last_change >  62.50
+|   |   |   |   |--- class: 0
+
+Final if-else logic:
+if (prev_state <= 0.5) {
+    if (hour <= 9.5) {
+        fanState = 0;  // predicted from 120 training samples
+    } else {
+        if (hour <= 20.5) {
+            if (hour <= 13.5) {
+                fanState = 0;  // predicted from 54 training samples
+            } else {
+                fanState = 1;  // predicted from 56 training samples
+            }
+        } else {
+            fanState = 0;  // predicted from 41 training samples
+        }
+    }
+} else {
+    if (hour <= 4.5) {
+        if (time_since_last_change <= 65.0) {
+            if (day_of_week <= 2.5) {
+                fanState = 1;  // predicted from 2 training samples
+            } else {
+                fanState = 0;  // predicted from 17 training samples
+            }
+        } else {
+            fanState = 0;  // predicted from 4 training samples
+        }
+    } else {
+        if (hour <= 22.5) {
+            fanState = 1;  // predicted from 53 training samples
+        } else {
+            if (time_since_last_change <= 62.5) {
+                fanState = 1;  // predicted from 10 training samples
+            } else {
+                fanState = 0;  // predicted from 8 training samples
+            }
+        }
+    }
+}

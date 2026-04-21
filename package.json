@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "simulate:esp8266": "node simulate_esp8266.js"
+  },
+  "dependencies": {
+    "mqtt": "^5.15.1"
+  }
+}
