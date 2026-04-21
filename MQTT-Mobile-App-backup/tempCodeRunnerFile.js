@@ -1,0 +1,4 @@
+
+
+const RAW_BROKER_URL = process.env.EXPO_PUBLIC_HIVEMQ_BROKER_URL || '';
+const RAW_PORT = process.env.EXPO_PUBLIC_HIVEMQ_PORT 
